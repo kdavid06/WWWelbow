@@ -79,7 +79,7 @@ ui <- dashboardPage(skin="blue",
 
 server <- function(input, output) {
   
-  set_key("AIzaSyANJWDkNERnmxYO3K4wWjHTue9H3uCBlMQ")
+  set_key("insert API key")
   
   observe({
     mandatoryFilled <- 
