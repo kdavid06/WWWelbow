@@ -2,9 +2,9 @@
 setwd("~/MSc project/data")
 if (!require(googleway)) install.packages('googleway')
 library(googleway)
-set_key("AIzaSyANJWDkNERnmxYO3K4wWjHTue9H3uCBlMQ")
+set_key("insert my key")
 
-key<- "AIzaSyANJWDkNERnmxYO3K4wWjHTue9H3uCBlMQ"
+key<- "insert my key"
 
 #read in required data
 GP_services <- read.csv("GP_services.csv", header=TRUE)
