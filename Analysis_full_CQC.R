@@ -108,7 +108,7 @@ if (file.exists("Hosp_services.csv")){
   #there is no unique identifier in the CQC data to match on, so explore other options
   #given the number of rows we have we could create the long/lat data from the googleway geocoder
   #both options were explored, the batch geodcoder although very quick didnt identify 21 of the postcodes
-  key = "AIzaSyANJWDkNERnmxYO3K4wWjHTue9H3uCBlMQ"
+  key = "insert my key"
   res <- future_apply(Hosp_services,1, function(x){
     google_geocode(x[['Postcode']], key = key)
   })
