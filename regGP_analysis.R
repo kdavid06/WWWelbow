@@ -3,15 +3,6 @@ setwd("~/MSc project/data")
 source("function_library.R")
 key<- setup_wrkspc()
 
-HDGP <- prepare_HES_regGP("HDGP.csv")
-HDGP_c <- create_GPLoc("HDGP_c.csv")
-HDGP_comb_g <- create_dist_comb("HDGP_comb_g.csv")
-HDGP_comb_g_w <- create_wide_elements("HDGP_comb_g_w.csv")
-LSOAs <- Agg_data(TRUE)
-LSOA <- as.data.frame(LSOAs[1])
-LSOA_w <- as.data.frame(LSOAs[2])
-LSOA_loc <- create_LSOAloc("LSOA_loc.csv")
-
 ##Prduction of exploratory visualisations
 
 #proportion of patients not registered at a GP
