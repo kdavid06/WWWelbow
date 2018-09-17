@@ -2,7 +2,8 @@ source("function_library.R")
 
 
 server <- function(input, output) {
-
+  #make entry of the postcode field compulsary
+  #creates condition which will only activates the submit postcode button once input has been given to the postcode text box 
   observe({
     mandatoryFilled <- 
       vapply(fieldsMandatory,
@@ -14,17 +15,19 @@ server <- function(input, output) {
     shinyjs::toggleState("Runpc", mandatoryFilled)
     shinyjs::toggleState("Direct", mandatoryFilled)
   })
-  
+  #enable the hide functionality on the advanced settings
   observe({
     shinyjs::onclick("toggleAdvanced", 
                      shinyjs::toggle(id="advancedSettings", anim=TRUE))
   })
   
-
+  #define the initial function activated by the 'submit postcode' button
+  #geocodes the start location
   setstart <- eventReactive (input$Runpc, {
     postc <- input$myLocation
     geo_reply <- google_geocode(postc, simplify=TRUE)
     add_com <- unlist(geo_reply$results$address_components)
+    #performs checks on postcode, input generating message to user when error is found
     validate(
         need(geo_reply$status =="OK", "Postcode entered is invalid, please enter a valid postcode.") %then%
           need("England" %in% add_com, "Postcode entered is from outside of England, this tool is just for England area")
@@ -35,6 +38,7 @@ server <- function(input, output) {
     return(geo_reply)
   })
 
+  #captures the service type specifed through the radio buttons and subsets the data
   Service_Types <- eventReactive(input$show_serv, {
     validate(
       need(input$show_serv !="", "Please choose a service type.")
@@ -46,7 +50,8 @@ server <- function(input, output) {
     return(sd)
   })
   
-
+  #Creates the distance data activated by the 'submit postcode' button
+  #returns shortlist to be fed to the directions function and fed to the render map function
   dis_data <- eventReactive(input$Runpc, {
     key <- set_up_shiny()
     stpo <- setstart()
@@ -65,6 +70,8 @@ server <- function(input, output) {
     return(dist_t5)
   })
   
+  #Creates the directions data activated by the 'get directions' button
+  #returns polylines to be displayed on the map through the update map function
   dir_data <- eventReactive(input$Direct, {
     t5_input <- dis_data()
     stpo <- setstart()
@@ -79,6 +86,8 @@ server <- function(input, output) {
     return(dir_t5)
   })
   
+  #generates the map to be displayed using the distance data returned by the dis_data function.
+  #triggered through the conditional panel in the UI
   output$myMap <- renderGoogle_map({
     t5_dist <- dis_data()
     stpo <- setstart()
@@ -89,10 +98,12 @@ server <- function(input, output) {
       add_markers(data=t5_dist, colour="colour", info_window = "info", close_info_window = T)
   })
   
+  #generates the holding map to be displayed until the user presses 'submit postcode'
   output$holdMap <- renderGoogle_map({
     google_map(location= c(53.118755, -1.448822), zoom=7)
   })
   
+  #triggers the updating of the map displayed to include the polylines, returned by the dir_data function
   observeEvent(input$Direct, {
     directs <- dir_data()
     google_map_update(map_id="myMap") %>%
@@ -100,7 +111,7 @@ server <- function(input, output) {
       add_polylines(data=directs, polyline="polyline")
   })
   
-  
+  #creates the accompanying text displaying the user inputted data above the map.
   displayText <- observeEvent(input$Runpc, {
     if(input$show_serv == "All"){
       Service <-  "GPs & Hospitals"

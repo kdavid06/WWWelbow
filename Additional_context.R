@@ -6,7 +6,7 @@ install.packages("readxl")
 library(readxl)
 setwd("~/MSc project/data/")
 
-#age data
+#load in the age and gender data
 Age <- read_excel("./Additional_data/LSOA_age_gender.xlsx", sheet="Mid-2016-Persons", skip=4)
 Gender <- read_excel("./Additional_data/LSOA_age_gender.xlsx", sheet="Mid-2016-Females", skip=4)
 #create over 65 and over 85 cateogries and proportion of population

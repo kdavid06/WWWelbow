@@ -1,3 +1,4 @@
+#function to load in all the required packages for the full library
 setup_wrkspc <- function(){
   #below package contains functions to do the initial data cleaning and preprocessing
   if (!require(plotly)) install.packages('plotly')
@@ -26,10 +27,6 @@ setup_wrkspc <- function(){
   library(googleway)
   if (!require(future.apply)) install.packages('future.apply')
   library(future.apply)
-  
-  #below packages contain functions to undertake the analysis and produce the visualisations
-  if (!require(leaflet)) install.packages('leaflet')
-  library(leaflet)
   
   #below packages are required for the findHealth application
   if (!require(shiny)) install.packages('shiny')
@@ -489,6 +486,7 @@ comb_data <- function(rerun){
   return(list(HES_comb, HES_comb_w))
 }
 
+#function to load the required data into the server side of the shiny application
 load_data <- function(){
   if (file.exists("All.csv")){
     All <- read.csv(data_source, header=TRUE)
@@ -513,6 +511,7 @@ load_data <- function(){
   return(All)
 }
 
+#function to set up the server side of the shiny application
 set_up_shiny <- function(){
   fieldsMandatory <- c("myLocation")
   home_address <<- ""
@@ -523,7 +522,7 @@ set_up_shiny <- function(){
   return(key)
 }
 
-
+#prepare the HES data including the registered GP code.
 prepare_HES_regGP <- function(data_source){
   if(data_source=="HDGP.csv"){
     HDGP <- read.csv(data_source, header=TRUE)
@@ -560,6 +559,7 @@ prepare_HES_regGP <- function(data_source){
   return(HDGP)
 }
 
+#create location data for the registered GPs.
 create_GPLoc <- function(data_source){
   if (data_source=="HDGP_c.csv"){
     HDGP_c <- read.csv(data_source, header=TRUE)
